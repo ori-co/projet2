@@ -59,78 +59,15 @@ class ItineraireController {
 			def x    = x0 + c * Math.exp( -1 * n * gl)* Math.sin( n * ( (longitude*pi/180) - pi/60))
 			def y    = ys - c * Math.exp( -1 * n * gl)* Math.cos( n * ( (longitude*pi/180) - pi/60))
 			
-
-			
-			
 		//requêtes SQL
+			//envoi requete SQL pour avoir le noeud le plus proche
+		def noeudplusproche = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x+" "+y+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x+" "+y+")'), the_geom)) FROM ROADS_NODES);")
 
-			// Créer une table avec les points sélectionnés sur la carte, en coordonnées Lambert 93
-			
-			def sql = new Sql(dataSource)
-			
-			//CREATE TABLE points_selectionnes (the_geom GEOMETRY, name VARCHAR(50));
-			
-			sql.execute '''create table points_selectionnes (the_geom GEOMETRY,name VARCHAR(50))'''
-			
-			sql.execute  'INSERT INTO points_selectionnes(the_geom, name) VALUES (
-				( ST_Transform(ST_GeomFromText('POINT(point_depart_latpoint_depart_long)', 4326), 2154), 'point de depart'),
-				( ST_Transform(ST_GeomFromText('POINT(point_arrivee_latpoint_arrivee_long)', 4326), 2154), 'point d arrivee'))'
-			
-			
-			// Il faudra importer point_depart_lat, point_depart_long, point_arrivee_lat  et point_arrivee_long depuis la view
-			
-			 // 4326 : code EPSG pour latlong
-			 // 2154 : code EPSG pour Lambert 93
-			
-			 // On cherche le noeud du graphe le plus proche du point de départ sélectionné sur la carte
-			
-			defid_noeud_depart = sql.rows (
-			“SELECT id AS id_noeud_depart FROM ROADS_NODES
-			WHERE ST_Distance(ST_Transform(ST_GeomFromText('POINT(point_depart_latpoint_depart_long)', 4326), 2154), the_geom) IN
-				(SELECT min(ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_depart_latpoint_depart_long)', 4326), 2154), the_geom)) FROM ROADS_NODES);
-			“)
-			
-			
-			// On cherche le noeud du graphe le plus proche du point d'arrivée sélectionné sur la carte
-			
-			defid_noeud_arrivee = sql.rows (
-			“SELECT id AS id_noeud_arrivee FROM ROADS_NODES
-			WHERE ST_Distance(ST_Transform(ST_GeomFromText('POINT(point_arrivee_latpoint_arrivee_long)', 4326), 2154), the_geom) IN
-				(SELECT min(ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_arrivee_latpoint_arrivee_long)', 4326), 2154), the_geom)) FROM ROADS_NODES);
-			“)
-			
-			
-			
-			// Créer une table pour le noeud de départ et une pour le noeud d'arrivée
-			
-			//CREATE TABLE startnode AS SELECT * FROM ROADS_NODES where id=id_noeud_depart;
-			
-			sql.execute '''
-create table startnodeAS SELECT * FROM ROADS_NODES where id=id_noeud_depart
- '''
-			
-			//CREATE TABLE endnode AS SELECT * FROM ROADS_NODES where id=id_noeud_arrivee;
-			sql.execute '''
-create table endnodeAS SELECT * FROM ROADS_NODES where id=id_noeud_arrivee
- '''
-			
-			
-			
-			 // On execute la fonctionST_ShortestPathLength entre ces 2 noeuds
-			
-			//CREATE TABLE distance AS SELECT * FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', id_noeud_depart, id_noeud_arrivee);
-			
-			
-			sql.execute '''
-create tabledistance AS SELECT * FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', id_noeud_depart, id_noeud_arrivee) '''
-			
-			
-			
 			
 		// Exemple de distance			
 		def distance=12;
 		
 		// retour
-		[distance:distance]
+		[distance:distance, noeudplusproche:noeudplusproche]
 	}
 }
