@@ -6,7 +6,37 @@ class ItineraireController {
 
 	def dataSource
 	
-    def index= { 
+	def index ={
+		
+	}
+	
+	
+	def resultat ={
+		// Récupération des coordonnées des points
+				def depart_lat =params.dep_lat;
+				def depart_lng =params.dep_lng;
+				def arrivee_lat =params.arr_lat;
+				def arrivee_lng =params.arr_lng;
+			
+		// Conversion des coordonnées des points
+				// depart_lat, depart_lng vers x_dep, y_dep
+				// arrivee_lat, arrivee_lng vers x_arr, y_arr
+				
+		// Requetes SQL
+				//envoi requete SQL pour avoir le noeud le plus proche
+				//def noeudplusproche_dep = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom)) FROM ROADS_NODES);");
+				//def noeudplusproche_arr = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom)) FROM ROADS_NODES);");
+				
+				// st_shortestpathlengh entre noeudplusproche_dep et noeudplusproche_arr				
+				
+				def distance = 77
+		
+		// Retours
+				 // point de depart et d'arrivée, lat et lng et distance mini
+				 [depart_lat:depart_lat,depart_lng:depart_lng,arrivee_lat:arrivee_lat,arrivee_lng:arrivee_lng ,distance:distance]
+	 }
+	
+    def conversion(lat, lng) { 
 		// Conversion de coordonnées
 			/////Début du Script de Conversion Long/Lat => Lambert93.///////////
 			
@@ -58,16 +88,7 @@ class ItineraireController {
 			//Résultat. Les deux coordonnées en Lambert93 sont
 			def x    = x0 + c * Math.exp( -1 * n * gl)* Math.sin( n * ( (longitude*pi/180) - pi/60))
 			def y    = ys - c * Math.exp( -1 * n * gl)* Math.cos( n * ( (longitude*pi/180) - pi/60))
-			
-		//requêtes SQL
-			//envoi requete SQL pour avoir le noeud le plus proche
-		def noeudplusproche = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x+" "+y+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x+" "+y+")'), the_geom)) FROM ROADS_NODES);")
 
-			
-		// Exemple de distance			
-		def distance=12;
-		
-		// retour
-		[distance:distance, noeudplusproche:noeudplusproche]
+			return [x,y]
 	}
 }
