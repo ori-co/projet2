@@ -7,9 +7,7 @@ class ItineraireController {
 	def dataSource
 	
 	def index ={
-		
 	}
-	
 	
 	def resultat ={
 		// Récupération des coordonnées des points
@@ -21,6 +19,7 @@ class ItineraireController {
 		// Conversion des coordonnées des points
 				// depart_lat, depart_lng vers x_dep, y_dep
 				// arrivee_lat, arrivee_lng vers x_arr, y_arr
+				// def [a,b] = conversion(depart_lat,depart_lng);
 				
 		// Requetes SQL
 				//envoi requete SQL pour avoir le noeud le plus proche
@@ -29,14 +28,14 @@ class ItineraireController {
 				
 				// st_shortestpathlengh entre noeudplusproche_dep et noeudplusproche_arr				
 				
-				def distance = 77
+				def distance = 77;
 		
 		// Retours
 				 // point de depart et d'arrivée, lat et lng et distance mini
 				 [depart_lat:depart_lat,depart_lng:depart_lng,arrivee_lat:arrivee_lat,arrivee_lng:arrivee_lng ,distance:distance]
 	 }
 	
-    def conversion(lat, lng) { 
+	def conversion (lat, lng) {
 		// Conversion de coordonnées
 			/////Début du Script de Conversion Long/Lat => Lambert93.///////////
 			

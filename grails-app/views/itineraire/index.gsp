@@ -31,8 +31,8 @@
 				});
 
 						// problème avec les url des images ?
-				var depart = new Drapeaux({ iconUrl: '/Images/Drapeau-vert.png'}),
-					arrivee = new Drapeaux({ iconUrl: '/Images/Drapeau-rouge.png'});
+				var depart = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/Images/Drapeau-vert.png'}),
+					arrivee = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/Images/Drapeau-rouge.png'});
 		
 				L.icon = function (options) {
 					return new L.Icon(options);
@@ -41,7 +41,7 @@
 			// Définition des fonctions associées aux clics
 				var onMapClick1 = function(e) {			
 					// Définir des nouvelles coordonnées pour le marqueur de point de départ
-					marker1 = L.marker(e.latlng);  //peut etre {draggable:true} ?
+					marker1 = L.marker(e.latlng, {icon: depart});  //peut etre {draggable:true} ?
 					map.addLayer(marker1);
 					marker1.bindPopup("Point de départ");
 					point_depart = marker1.getLatLng();
@@ -56,7 +56,7 @@
 
 				var onMapClick2 = function(e) {
 					// Définir des nouvelles coordonnées pour le marqueur de point d'arrivée
-					marker2 = L.marker(e.latlng); // peut etre {draggable:true} ?
+					marker2 = L.marker(e.latlng, {icon: arrivee}); // peut etre {draggable:true} ?
 					map.addLayer(marker2);
 					marker2.bindPopup("Point d'arrivée");
 					point_arrivee = marker2.getLatLng();
