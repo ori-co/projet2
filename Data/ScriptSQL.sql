@@ -18,7 +18,13 @@ UPDATE ROADS_EDGES SET eo=0 WHERE SENS='NC';
 
 ALTER TABLE ROADS_EDGES ADD COLUMN w DOUBLE;  -- w: weight
 
-UPDATE ROADS_EDGES SET w=ST_Lenght(the_geom);
+UPDATE ROADS_EDGES SET w=ST_Length(the_geom);
+
+
+
+-- transformer les lat/lng en lambert 93
+
+select ST_Transform(ST_GeomFromText('POINT(-1.554 47.213)', 4326), 2154);
 
 -- Créer une table avec les points sélectionnés sur la carte, en coordonnées Lambert 93
 
@@ -26,8 +32,8 @@ CREATE TABLE points_selectionnes (the_geom GEOMETRY, name VARCHAR(50));
 
 INSERT INTO points_selectionnes VALUES (
 
- ( ST_Transform(ST_GeomFromText('POINT(point_depart_lat point_depart_long)', 4326), 2154), 'point de depart'),
- ( ST_Transform(ST_GeomFromText('POINT(point_arrivee_lat point_arrivee_long)', 4326), 2154), 'point d arrivee'));
+ ( ST_Transform(ST_GeomFromText('POINT(point_depart_long point_depart_lat)', 4326), 2154), 'point de depart'),
+ ( ST_Transform(ST_GeomFromText('POINT(point_arrivee_long point_arrivee_lat )', 4326), 2154), 'point d arrivee'));
 
 
  -- il faudra importer point_depart_lat, point_depart_long, point_arrivee_lat, et point_arrivee_long depuis la view.
@@ -37,23 +43,25 @@ INSERT INTO points_selectionnes VALUES (
 
  -- On cherche le noeud du graphe le plus proche du point de départ sélectionné sur la carte
 
-SELECT id AS id_noeud_depart FROM ROADS_NODES
-WHERE ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_depart_lat point_depart_long)', 4326), 2154), the_geom) IN
-(SELECT min(ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_depart_lat point_depart_long)', 4326), 2154), the_geom)) FROM ROADS_NODES);
-
+SELECT node_id AS id_noeud_depart FROM ROADS_NODES 
+WHERE ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom) IN 
+(SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom)) FROM ROADS_NODES);
 
  -- On cherche le noeud du graphe le plus proche du point d'arrivée sélectionné sur la carte
 
-SELECT id AS id_noeud_arrivee FROM ROADS_NODES
-WHERE ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_arrivee_lat point_arrivee_long)', 4326), 2154), the_geom) IN
-(SELECT min(ST_Distance( ST_Transform(ST_GeomFromText('POINT(point_arrivee_lat point_arrivee_long)', 4326), 2154), the_geom)) FROM ROADS_NODES);
+SELECT node_id AS id_noeud_arrivee FROM ROADS_NODES 
+WHERE ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom) IN 
+(SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom)) FROM ROADS_NODES);
 
  -- Créer une table pour le noeud de départ et une pour le noeud d'arrivée
 
-CREATE TABLE startnode AS SELECT * FROM ROADS_NODES where id=id_noeud_depart;
+CREATE TABLE startnode AS SELECT * FROM ROADS_NODES where id="+id_noeud_depart+";
 
-CREATE TABLE endnode AS SELECT * FROM ROADS_NODES where id=id_noeud_arrivee;
+CREATE TABLE endnode AS SELECT * FROM ROADS_NODES where id="+id_noeud_arrivee+";
 
  -- On execute la fonction ST_ShortestPathLength entre ces 2 noeuds
 
-CREATE TABLE distance AS SELECT * FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', id_noeud_depart, id_noeud_arrivee);
+SELECT distance FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")
+
+
+

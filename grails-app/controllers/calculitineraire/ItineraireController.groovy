@@ -17,24 +17,46 @@ class ItineraireController {
 				def arrivee_lng =params.arr_lng;
 			
 		// Conversion des coordonnées des points
+				def sql = new Sql(dataSource)
+				
 				// depart_lat, depart_lng vers x_dep, y_dep
+				def x_dep = sql.firstRow("SELECT ST_X(ST_Transform(ST_GeomFromText('POINT("+depart_lng+" "+depart_lat+")', 4326), 2154)) AS x_dep").x_dep
+				def y_dep = sql.firstRow("SELECT ST_Y(ST_Transform(ST_GeomFromText('POINT("+depart_lng+" "+depart_lat+")', 4326), 2154)) AS y_dep").y_dep
+				
 				// arrivee_lat, arrivee_lng vers x_arr, y_arr
+				def x_arr = sql.firstRow("SELECT ST_X(ST_Transform(ST_GeomFromText('POINT("+arrivee_lng+" "+arrivee_lat+")', 4326), 2154)) AS x_arr").x_arr
+				def y_arr = sql.firstRow("SELECT ST_Y(ST_Transform(ST_GeomFromText('POINT("+arrivee_lng+" "+arrivee_lat+")', 4326), 2154)) AS y_arr").y_arr
+				
 				// def [a,b] = conversion(depart_lat,depart_lng);
 				
+				
+				
 		// Requetes SQL
-				//envoi requete SQL pour avoir le noeud le plus proche
-				//def noeudplusproche_dep = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom)) FROM ROADS_NODES);");
-				//def noeudplusproche_arr = sql.rows("SELECT node_id FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom)) FROM ROADS_NODES);");
 				
-				// st_shortestpathlengh entre noeudplusproche_dep et noeudplusproche_arr				
-				
-				def distance = 77;
 		
+				// Créer une table avec les points selectionnes en lambert93  (ne fonctionne pas pour l'instant)
+				//sql.execute ''' CREATE TABLE points_lambert93 (the_geom GEOMETRY, name VARCHAR(50))'''
+				//sql.execute("INSERT INTO points_lambert93(the_geom, name) VALUES((ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), 'point depart'), (ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), 'point arrivee'))")
+				
+				
+				//envoi requete SQL pour avoir le noeud le plus proche
+				
+				def id_noeud_depart = sql.firstRow("SELECT node_id AS id_noeud_depart FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_dep+" "+y_dep+")'), the_geom)) FROM ROADS_NODES);").id_noeud_depart
+				def id_noeud_arrivee = sql.firstRow("SELECT node_id AS id_noeud_arrivee FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom)) FROM ROADS_NODES);").id_noeud_arrivee
+				
+						
+				// st_shortestpathlengh entre id_noeud_depart et id_noeud_arrivee
+				def distance = sql.firstRow("SELECT distance FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")").distance
+				
+
+				
 		// Retours
-				 // point de depart et d'arrivée, lat et lng et distance mini
-				 [depart_lat:depart_lat,depart_lng:depart_lng,arrivee_lat:arrivee_lat,arrivee_lng:arrivee_lng ,distance:distance]
+				 // coordonnées points de départ et d'arrivée (en lat/lng et lambert93), et distance minimale
+				 [depart_lat:depart_lat,  depart_lng:depart_lng,  arrivee_lat:arrivee_lat,  arrivee_lng:arrivee_lng,  x_dep:x_dep,  y_dep:y_dep,  x_arr:x_arr,  y_arr:y_arr,  distance:distance]
 	 }
 	
+	
+/*	
 	def conversion (lat, lng) {
 		// Conversion de coordonnées
 			/////Début du Script de Conversion Long/Lat => Lambert93.///////////
@@ -90,4 +112,6 @@ class ItineraireController {
 
 			return [x,y]
 	}
+*/
+	
 }
