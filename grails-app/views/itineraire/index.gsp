@@ -76,10 +76,10 @@
 	 		 </script>
 
 <g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']">
-Depart :<br/>
-  Latitude : <input id="dep_lat" type="text" name="dep_lat" /> Longitude : <input id="dep_lng" type="text" name="dep_lng" /> <br/>
-Arrivée :<br/>
-  Latitude : <input id="arr_lat" type="text" name="arr_lat" /> Longitude : <input id="arr_lng" type="text" name="arr_lng" /> <br/>
+<!--Depart : -->
+  <!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" />
+<!--Arrivée : -->
+  <!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" />
   <input type="submit" value="OK" />
 </g:formRemote>
 
