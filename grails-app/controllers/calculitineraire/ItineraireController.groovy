@@ -45,10 +45,18 @@ class ItineraireController {
 				def id_noeud_arrivee = sql.firstRow("SELECT node_id AS id_noeud_arrivee FROM ROADS_NODES WHERE ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom) IN (SELECT min(ST_Distance(ST_GeomFromText('POINT("+x_arr+" "+y_arr+")'), the_geom)) FROM ROADS_NODES);").id_noeud_arrivee
 				
 						
-				// st_shortestpathlengh entre id_noeud_depart et id_noeud_arrivee
+				// st_shortestpathlength entre id_noeud_depart et id_noeud_arrivee
 				def distance = sql.firstRow("SELECT distance FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")").distance
 				
 
+				// st_shortestpath entre id_noeud_depart et id_noeud_arrivee
+				// sql.execute("CREATE TABLE chemins AS SELECT st_shortestpath('roads_edges', 'directed - eo' 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")")
+				
+				// récupération du chemin d'id=1 et conversion en lat/lng
+				// sql.execute("CREATE TABLE chemin AS SELECT ST_TRANSFORM(the_geom, 2154,4326) as arcs_latlng, "pathedge" id FROM chemins WHERE "pathid" =1 );
+				
+				// création d'une liste de liste de points en lat/lng
+			
 				
 		// Retours
 				 // coordonnées points de départ et d'arrivée (en lat/lng et lambert93), et distance minimale

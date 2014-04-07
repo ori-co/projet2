@@ -31,8 +31,8 @@
 				});
 
 						// problème avec les url des images ?
-				var depart = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/Images/Drapeau-vert.png'}),
-					arrivee = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/Images/Drapeau-rouge.png'});
+				var depart = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/images/Drapeau-vert.png'}),
+					arrivee = new Drapeaux({ iconUrl: 'C:/Grails/Workspace/CalculItineraire/images/Drapeau-rouge.png'});
 		
 				L.icon = function (options) {
 					return new L.Icon(options);
