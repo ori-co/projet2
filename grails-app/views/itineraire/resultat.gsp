@@ -45,13 +45,17 @@
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
 				
+			var itineraire = ${trajet};
+			L.geoJson(itineraire).addTo(map);	
+				
  		 </script>
 
 <p> 
 Point de départ : (${depart_lat},${depart_lng}) <br/>
 et <br/>
 Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/>
-Distance : ${distance}
+Distance : ${distance} <br/>
+${trajet}
 </p>
 
 
