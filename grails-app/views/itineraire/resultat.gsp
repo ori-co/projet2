@@ -13,6 +13,7 @@
 		<script>
 			// Initialiser la carte sur les coordonnées géographiques de Nantes
 			var map = L.map('map').setView([47.213, -1.554], 16);
+			map.fitBounds([[${depart_lat},${depart_lng}],[${arrivee_lat},${arrivee_lng}]]);
 
 			// Définition des markers 
 			var Drapeaux = L.Icon.extend({
