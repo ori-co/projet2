@@ -1,4 +1,4 @@
-<html>
+<html> 
 <head>
 	<meta charset="utf-8" />
 	<title> Création d'un itinéraire </title>
@@ -13,7 +13,7 @@
 		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 		<script>
 			// Initialiser la carte sur les coordonnées géographiques de Nantes
-			var map = L.map('map').setView([47.213, -1.554], 16);
+			var map = L.map('map').setView([47.21647836591961, -1.5535354614257812], 14);
 
 			// Ajouter une couche OSM sur la carte qu'on a initialisée
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

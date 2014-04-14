@@ -12,7 +12,7 @@
 		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 		<script>
 			// Initialiser la carte sur les coordonnées géographiques de Nantes
-			var map = L.map('map').setView([47.213, -1.554], 16);
+			var map = L.map('map');
 			map.fitBounds([[${depart_lat},${depart_lng}],[${arrivee_lat},${arrivee_lng}]]);
 
 			// Définition des markers 
@@ -45,12 +45,14 @@
 			marker2 = L.marker([${arrivee_lat},${arrivee_lng}], {icon: arrivee});
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
+			 
+			// marker2.bindPopup("Point d'arrivée <br/> Distance : ${distance}").openPopup();
 			
 			
 			var myStyle = {
 			    "color": "red",
 			    "weight": 5,
-			    "opacity": 0.65
+			    "opacity": 1
 			};
 			
 			var itineraire = L.geoJson(${raw(trajet)}, {style: myStyle}).addTo(map);
@@ -60,9 +62,9 @@
  		 </script>
 
 <p> 
-Point de départ : (${depart_lat},${depart_lng}) <br/>
+<!--  Point de départ : (${depart_lat},${depart_lng}) <br/>
 et <br/>
-Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/>
+Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/> -->
 Distance : ${distance} 
 </p>
 
