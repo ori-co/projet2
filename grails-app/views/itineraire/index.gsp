@@ -62,10 +62,21 @@
 					point_arrivee = marker2.getLatLng();
 					
 					map.removeEventListener('click', onMapClick2, false);
+					map.addEventListener('mouseout', miseAJour, false);
 
 					document.getElementById("arr_lat").setAttribute("value",point_arrivee.lat);
 					document.getElementById("arr_lng").setAttribute("value",point_arrivee.lng);
 				}
+				
+				var miseAJour = function(){
+					point_depart = marker1.getLatLng();
+					document.getElementById("dep_lat").setAttribute("value",point_depart.lat);
+					document.getElementById("dep_lng").setAttribute("value",point_depart.lng);
+
+					point_arrivee = marker2.getLatLng();
+					document.getElementById("arr_lat").setAttribute("value",point_arrivee.lat);
+					document.getElementById("arr_lng").setAttribute("value",point_arrivee.lng);
+				}				
 				
 				map.addEventListener('click', onMapClick1, false);		
 				var marker1;
