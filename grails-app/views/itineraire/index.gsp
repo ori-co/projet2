@@ -41,7 +41,7 @@
 			// Définition des fonctions associées aux clics
 				var onMapClick1 = function(e) {			
 					// Définir des nouvelles coordonnées pour le marqueur de point de départ
-					marker1 = L.marker(e.latlng, {icon: depart}, {draggable:true});  
+					marker1 = L.marker(e.latlng, {icon: depart, draggable:true});  
 					map.addLayer(marker1);
 					marker1.bindPopup("Point de départ");
 					point_depart = marker1.getLatLng();
@@ -56,7 +56,7 @@
 
 				var onMapClick2 = function(e) {
 					// Définir des nouvelles coordonnées pour le marqueur de point d'arrivée
-					marker2 = L.marker(e.latlng, {icon: arrivee}, {draggable:true}); 
+					marker2 = L.marker(e.latlng, {icon: arrivee, draggable:true}); 
 					map.addLayer(marker2);
 					marker2.bindPopup("Point d'arrivée");
 					point_arrivee = marker2.getLatLng();
