@@ -45,9 +45,17 @@
 			marker2 = L.marker([${arrivee_lat},${arrivee_lng}], {icon: arrivee});
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
-				
-			var itineraire = ${raw(trajet)};
-			L.geoJson(itineraire).addTo(map);	
+			
+			
+			var myStyle = {
+			    "color": "red",
+			    "weight": 5,
+			    "opacity": 0.65
+			};
+			
+			var itineraire = L.geoJson(${raw(trajet)}, {style: myStyle}).addTo(map);
+
+			map.fitBounds(itineraire.getBounds());	
 				
  		 </script>
 
@@ -55,7 +63,7 @@
 Point de départ : (${depart_lat},${depart_lng}) <br/>
 et <br/>
 Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/>
-Distance : ${distance} <br/>
+Distance : ${distance} 
 </p>
 
 
