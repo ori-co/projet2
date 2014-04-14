@@ -46,7 +46,7 @@
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
 				
-			var itineraire = ${trajet};
+			var itineraire = eval(${raw(trajet)});
 			L.geoJson(itineraire).addTo(map);	
 				
  		 </script>

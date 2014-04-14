@@ -53,7 +53,7 @@ class ItineraireController {
 				sql.execute 'drop table if exists toto'
 				sql.execute " CREATE TABLE toto AS SELECT ST_AsGeoJson(ST_Union(ST_Accum(arcs_latlng))) as arcs_geojson FROM plus_court_chemin"
 				
-				def trajet = sql.firstRow("SELECT arcs_geojson AS trajet FROM toto").trajet.toString()
+				def trajet = sql.firstRow("SELECT arcs_geojson AS trajet FROM toto").trajet
 				
 
 				
