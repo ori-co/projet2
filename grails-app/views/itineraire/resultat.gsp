@@ -38,11 +38,11 @@
 				// attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 			}).addTo(map);
 
-			marker1 = L.marker([${depart_lat},${depart_lng}], {icon: depart});
+			var marker1 = L.marker([${depart_lat},${depart_lng}], {icon: depart, draggable:true});
 			map.addLayer(marker1);
 			marker1.bindPopup("Point de départ");			
 			
-			marker2 = L.marker([${arrivee_lat},${arrivee_lng}], {icon: arrivee});
+			var marker2 = L.marker([${arrivee_lat},${arrivee_lng}], {icon: arrivee, draggable:true});
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
 			 
@@ -50,7 +50,7 @@
 			
 			
 			var myStyle = {
-			    "color": "red",
+			    "color": "blue",
 			    "weight": 5,
 			    "opacity": 1
 			};
@@ -58,6 +58,46 @@
 			var itineraire = L.geoJson(${raw(trajet)}, {style: myStyle}).addTo(map);
 
 			map.fitBounds(itineraire.getBounds());	
+
+			// Définition des fonctions associées aux clics
+			var onMapClick1 = function(e) {			
+				// Définir des nouvelles coordonnées pour le marqueur de point de départ
+				marker1.setLatLng(e.latlng);  
+				point_depart = marker1.getLatLng();
+				
+				// appeler le deuxième script
+				map.removeEventListener('click', onMapClick1, false);
+				map.addEventListener('click', onMapClick2, false);
+
+				document.getElementById("dep_lat").setAttribute("value",point_depart.lat);
+				document.getElementById("dep_lng").setAttribute("value",point_depart.lng);
+			}
+
+			var onMapClick2 = function(e) {
+				// Définir des nouvelles coordonnées pour le marqueur de point d'arrivée
+				marker2.setLatLng(e.latlng);
+				point_arrivee = marker2.getLatLng();
+				
+				map.removeEventListener('click', onMapClick2, false);
+
+				document.getElementById("arr_lat").setAttribute("value",point_arrivee.lat);
+				document.getElementById("arr_lng").setAttribute("value",point_arrivee.lng);
+			}
+			
+			var miseAJour = function(){
+				point_depart = marker1.getLatLng();
+				document.getElementById("dep_lat").setAttribute("value",point_depart.lat);
+				document.getElementById("dep_lng").setAttribute("value",point_depart.lng);
+
+				point_arrivee = marker2.getLatLng();
+				document.getElementById("arr_lat").setAttribute("value",point_arrivee.lat);
+				document.getElementById("arr_lng").setAttribute("value",point_arrivee.lng);
+			}				
+			
+			map.addEventListener('click', onMapClick1, false);	
+			map.addEventListener('mouseout', miseAJour, false);	
+			var point_depart;
+			var point_arrivee;
 				
  		 </script>
 
@@ -68,10 +108,14 @@ Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/> -->
 Distance : ${distance} 
 </p>
 
+<g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']">
+<!--Depart : -->
+  <!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" />
+<!--Arrivée : -->
+  <!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" />
+  <input type="submit" value="OK" />
+</g:formRemote>
 
-<g:form controller="Itineraire">
-    <g:actionSubmit value="Retour" action="index"/>
-</g:form>
 
 </body>
 </html>
