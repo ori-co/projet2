@@ -94,9 +94,6 @@
   <input type="submit" value="OK" />
 </g:formRemote>
 
-<g:form controller="Itineraire">
-    <g:actionSubmit value="Retour" action="index"/>
-</g:form>
 
 
 </body>
