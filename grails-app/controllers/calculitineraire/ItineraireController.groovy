@@ -38,7 +38,7 @@ class ItineraireController {
 				
 						
 				// st_shortestpathlength entre id_noeud_depart et id_noeud_arrivee
-				def distance = sql.firstRow("SELECT distance FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")").distance
+				def distance = sql.firstRow("SELECT round(distance, 1) as distance FROM ST_ShortestPathLength('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")").distance
 				
 				
 				// st_shortestpath entre id_noeud_depart et id_noeud_arrivee
@@ -50,10 +50,10 @@ class ItineraireController {
 				sql.execute 'drop table if exists plus_court_chemin'
 				sql.execute " CREATE TABLE plus_court_chemin AS (SELECT ST_TRANSFORM(ST_SetSRID(the_geom, 2154), 4326) as arcs_latlng, path_edge_id FROM chemins WHERE path_id=1)"
 				
-				sql.execute 'drop table if exists toto'
-				sql.execute " CREATE TABLE toto AS SELECT ST_AsGeoJson(ST_Union(ST_Accum(arcs_latlng))) as arcs_geojson FROM plus_court_chemin"
+				sql.execute 'drop table if exists geojson'
+				sql.execute " CREATE TABLE geojson AS SELECT ST_AsGeoJson(ST_Union(ST_Accum(arcs_latlng))) as arcs_geojson FROM plus_court_chemin"
 				
-				def trajet = sql.firstRow("SELECT arcs_geojson AS trajet FROM toto").trajet
+				def trajet = sql.firstRow("SELECT arcs_geojson AS trajet FROM geojson").trajet
 				
 
 				
