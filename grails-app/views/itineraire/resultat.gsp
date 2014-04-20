@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title> Test de récupération de données </title>
+	<title> Calcul d'itinéraire </title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 </head>
@@ -23,7 +23,6 @@
 				}
 			});
 
-			// problème avec les url des images ?
 			var depart = new Drapeaux({ iconUrl: '../static/images/Drapeau-vert.png'}),
 				arrivee = new Drapeaux({ iconUrl: '../static/images/Drapeau-rouge.png'});
 	
@@ -33,10 +32,11 @@
 			
 			// Ajouter une couche OSM sur la carte qu'on a initialisée
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				//maxZoom: 18,
-				// attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
+				maxZoom: 18,
+				attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 			}).addTo(map);
 
+			// placement des marqueurs
 			var marker1 = L.marker([${depart_lat},${depart_lng}], {icon: depart, draggable:true});
 			map.addLayer(marker1);
 			marker1.bindPopup("Point de départ");			
@@ -44,10 +44,7 @@
 			var marker2 = L.marker([${arrivee_lat},${arrivee_lng}], {icon: arrivee, draggable:true});
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
-			 
-			// marker2.bindPopup("Point d'arrivée <br/> Distance : ${distance}").openPopup();
-			
-			
+			 			
 			var myStyle = {
 			    "color": "blue",
 			    "weight": 5,
@@ -109,7 +106,7 @@
   			<input type="submit" value="OK" />
   			</div>
   			
-  			<div style="position: absolute; top: 55%; border: 2.5px solid black; right: 3%; font-family: Calibri; background-color: white;">
+  			<div style="position: absolute; top: 70%; border: 2.5px solid black; right: 3%; font-family: Calibri; background-color: white;">
   			<p> 
 			<!--  Point de départ : (${depart_lat},${depart_lng}) <br/>
 			et <br/>
