@@ -5,10 +5,9 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 </head>
 
-<body>
- <h1>Résultats</h1>
+<body style="margin: 0; padding: 0;">
 
-		<div id="map" style="height: 500px; width : 800px" ></div>
+		<div id="map" style="position: absolute; top: 0; bottom: 0; width: 100%;"></div>
 		<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 		<script>
 			// Initialiser la carte sur les coordonnées géographiques de Nantes
@@ -24,7 +23,7 @@
 				}
 			});
 
-					// problème avec les url des images ?
+			// problème avec les url des images ?
 			var depart = new Drapeaux({ iconUrl: '../static/images/Drapeau-vert.png'}),
 				arrivee = new Drapeaux({ iconUrl: '../static/images/Drapeau-rouge.png'});
 	
@@ -98,23 +97,28 @@
 			map.addEventListener('mouseout', miseAJour, false);	
 			var point_depart;
 			var point_arrivee;
-				
- 		 </script>
+		</script>
 
-<p> 
-<!--  Point de départ : (${depart_lat},${depart_lng}) <br/>
-et <br/>
-Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/> -->
-Distance : ${distance} 
-</p>
-
-<g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']">
-<!--Depart : -->
-  <!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" />
-<!--Arrivée : -->
-  <!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" />
-  <input type="submit" value="OK" />
-</g:formRemote>
+		<g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']" >
+			<!--Depart : -->
+			<!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" />
+			<!--Arrivée : -->
+			<!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" />
+  			
+  			<div style="position: absolute; top: 50%; border: 2.5px solid black; right: 3%; background-color: white;">
+  			<input type="submit" value="OK" />
+  			</div>
+  			
+  			<div style="position: absolute; top: 55%; border: 2.5px solid black; right: 3%; font-family: Calibri; background-color: white;">
+  			<p> 
+			<!--  Point de départ : (${depart_lat},${depart_lng}) <br/>
+			et <br/>
+			Point d'arrivée : (${arrivee_lat},${arrivee_lng}) <br/> -->
+			Distance : ${distance} m
+			</p>
+			</div>
+  			
+		</g:formRemote>
 
 
 </body>
