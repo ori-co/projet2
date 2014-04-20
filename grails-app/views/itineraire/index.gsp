@@ -1,7 +1,7 @@
 <html> 
 <head>
 	<meta charset="utf-8" />
-	<title> Création d'un itinéraire </title>
+	<title> Calcul d'itinéraire </title>
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 	
 </head>
@@ -16,8 +16,8 @@
 
 			// Ajouter une couche OSM sur la carte qu'on a initialisée
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				//maxZoom: 18,
-				// attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
+				maxZoom: 18,
+				attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 			}).addTo(map);
 			
 			// Définition des markers 
@@ -29,7 +29,6 @@
 				}
 			});
 
-			// problème avec les url des images ?
 			var depart = new Drapeaux({ iconUrl: '../static/images/Drapeau-vert.png'}),
 				arrivee = new Drapeaux({ iconUrl: '../static/images/Drapeau-rouge.png'});
 		
