@@ -12,7 +12,6 @@
 		<script>
 			// Initialiser la carte sur les coordonnées géographiques de Nantes
 			var map = L.map('map');
-			map.fitBounds([[${depart_lat},${depart_lng}],[${arrivee_lat},${arrivee_lng}]]);
 
 			// Définition des markers 
 			var Drapeaux = L.Icon.extend({
@@ -32,7 +31,7 @@
 			
 			// Ajouter une couche OSM sur la carte qu'on a initialisée
 			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				maxZoom: 18,
+				//maxZoom: 18,
 				attribution  : 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>'
 			}).addTo(map);
 
@@ -45,15 +44,7 @@
 			map.addLayer(marker2);
 			marker2.bindPopup("Point d'arrivée");
 			 			
-			var myStyle = {
-			    "color": "blue",
-			    "weight": 5,
-			    "opacity": 1
-			};
 			
-			var itineraire = L.geoJson(${raw(trajet)}, {style: myStyle}).addTo(map);
-
-			map.fitBounds(itineraire.getBounds());	
 
 			// Définition des fonctions associées aux clics
 			var onMapClick1 = function(e) {			
@@ -94,13 +85,27 @@
 			map.addEventListener('mouseout', miseAJour, false);	
 			var point_depart;
 			var point_arrivee;
+			
+			// Affichage de l'itinéraire et zoom
+			var myStyle = {
+				    "color": "blue",
+				    "weight": 5,
+				    "opacity": 1
+				};
+			
+			var itineraire = L.geoJson(${raw(trajet)}, {style: myStyle}).addTo(map);
+			
+			map.fitBounds([[${depart_lat},${depart_lng}], [${arrivee_lat},${arrivee_lng}]]);
+			map.fitBounds(itineraire.getBounds());
+			
+			
 		</script>
 
 		<g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']" >
 			<!--Depart : -->
-			<!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" />
+			<!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat"  value=47.23035166509681 /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" value=-1.5997123718261719 />
 			<!--Arrivée : -->
-			<!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" />
+			<!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" value=47.20067703735144 /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng"  value=-1.5010929107666013 />
   			
   			<div style="position: absolute; top: 50%; border: 2.5px solid black; right: 3%; background-color: white;">
   			<input type="submit" value="OK" />
