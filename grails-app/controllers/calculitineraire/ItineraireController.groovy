@@ -44,6 +44,16 @@ class ItineraireController {
 				// st_shortestpath entre id_noeud_depart et id_noeud_arrivee
 				sql.execute 'drop table if exists chemins'
 				sql.execute " CREATE TABLE chemins AS SELECT * FROM ST_ShortestPath('ROADS_EDGES', 'directed - eo', 'w', "+id_noeud_depart+", "+id_noeud_arrivee+")"
+
+                def pathEmpty = false
+                sql.eachRow("SELECT * FROM chemins") {
+                    if (it.the_geom==null) {
+                        pathEmpty = true
+                    }
+                }
+                if (pathEmpty) {
+                    distance = "Infinity"
+                }
 				
 				
 				//Transformation en lat/lng pour les geom correspondant au path_id 1
