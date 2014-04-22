@@ -69,7 +69,7 @@ class ItineraireController {
 				
 		// Retours
 				 // coordonnées points de départ et d'arrivée (en lat/lng et lambert93), et distance minimale
-				 [depart_lat:depart_lat,  depart_lng:depart_lng,  arrivee_lat:arrivee_lat,  arrivee_lng:arrivee_lng,  distance:distance, trajet:trajet]
+				 [depart_lat:depart_lat,  depart_lng:depart_lng,  arrivee_lat:arrivee_lat,  arrivee_lng:arrivee_lng,  distance:distance, pathEmpty:pathEmpty, trajet:trajet]
 	 }
 	
 }
