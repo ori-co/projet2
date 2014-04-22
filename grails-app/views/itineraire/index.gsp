@@ -86,7 +86,7 @@
 
 		<g:formRemote name="valider_form" url="[controller:'Itineraire', action:'resultat']" >
 			<!--Depart : -->
-  			<!--Latitude : --> <input id="dep_lat" type="text" name="dep_lat" value=47.23035166509681 /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" value=-1.5997123718261719 />
+  			<!--Latitude : --> <input id="dep_lat" type="hidden" name="dep_lat" value=47.23035166509681 /> <!--Longitude : --> <input id="dep_lng" type="hidden" name="dep_lng" value=-1.5997123718261719 />
 			<!--Arrivée : -->
   			<!--Latitude : --> <input id="arr_lat" type="hidden" name="arr_lat" value=47.20067703735144 /> <!--Longitude : --> <input id="arr_lng" type="hidden" name="arr_lng" value=-1.5010929107666013 />
 			
